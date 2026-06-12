@@ -100,7 +100,7 @@ export function ChartOverview() {
             <Tooltip 
               contentStyle={{ backgroundColor: "hsl(var(--card))", borderColor: "hsl(var(--border))" }}
               itemStyle={{ color: "hsl(var(--foreground))" }}
-              formatter={(value: number) => [`Rp ${value.toLocaleString('id-ID')}`, '']}
+              formatter={(value: any) => [`Rp ${(value || 0).toLocaleString('id-ID')}`, '']}
             />
             <Area 
               type="monotone" 
