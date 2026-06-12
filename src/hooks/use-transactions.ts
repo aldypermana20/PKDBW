@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { Transaction } from '@/types/database'
 
@@ -7,15 +7,24 @@ export function useTransactions() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = useMemo(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!url || !key) return null
+    return createBrowserClient(url, key)
+  }, [])
 
   useEffect(() => {
     let isMounted = true
 
     async function fetchTransactions() {
+      if (!supabase) {
+        if (isMounted) {
+          setError('Supabase credentials are missing. Please configure your environment variables in Vercel.')
+          setLoading(false)
+        }
+        return
+      }
       try {
         setLoading(true)
         const { data: { user } } = await supabase.auth.getUser()
@@ -53,6 +62,8 @@ export function useTransactions() {
 
     fetchTransactions()
 
+    if (!supabase) return
+
     // Subscribe to realtime changes
     const channel = supabase
       .channel('transactions_changes')
@@ -75,6 +86,8 @@ export function useTransactions() {
 
   const addTransaction = async (transaction: Omit<Transaction, 'id' | 'created_at' | 'user_id'>) => {
     try {
+      if (!supabase) throw new Error('Supabase client is not initialized')
+      
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
@@ -93,6 +106,8 @@ export function useTransactions() {
 
   const deleteTransaction = async (id: string) => {
     try {
+      if (!supabase) throw new Error('Supabase client is not initialized')
+
       const { error } = await supabase
         .from('transactions')
         .delete()

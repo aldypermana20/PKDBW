@@ -9,7 +9,7 @@ import { useMemo } from "react"
 import { AddTransactionModal } from "@/components/transaksi/add-transaction-modal"
 
 export default function DashboardPage() {
-  const { transactions, loading } = useTransactions()
+  const { transactions, loading, error } = useTransactions()
 
   const stats = useMemo(() => {
     let totalIncome = 0
@@ -54,6 +54,12 @@ export default function DashboardPage() {
         </div>
         <AddTransactionModal />
       </div>
+
+      {error && (
+        <div className="p-4 mb-4 text-sm text-rose-800 rounded-lg bg-rose-50 dark:bg-rose-900/20 dark:text-rose-400 border border-rose-200 dark:border-rose-800" role="alert">
+          <span className="font-medium">Peringatan:</span> {error}
+        </div>
+      )}
       
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard 

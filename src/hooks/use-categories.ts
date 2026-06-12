@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { Category } from '@/types/database'
 
@@ -6,15 +6,21 @@ export function useCategories() {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = useMemo(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!url || !key) return null
+    return createBrowserClient(url, key)
+  }, [])
 
   useEffect(() => {
     let isMounted = true
 
     async function fetchCategories() {
+      if (!supabase) {
+        if (isMounted) setLoading(false)
+        return
+      }
       try {
         setLoading(true)
         const { data: { user } } = await supabase.auth.getUser()
@@ -42,6 +48,8 @@ export function useCategories() {
 
     fetchCategories()
 
+    if (!supabase) return
+
     // Realtime subscription for categories
     const channel = supabase
       .channel('categories_changes')
@@ -60,6 +68,8 @@ export function useCategories() {
 
   const addCategory = async (category: Omit<Category, 'id' | 'created_at' | 'user_id'>) => {
     try {
+      if (!supabase) throw new Error('Supabase client is not initialized')
+
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
