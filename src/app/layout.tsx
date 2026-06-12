@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -8,11 +8,14 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#10B981",
+};
+
 export const metadata: Metadata = {
   title: "Pencatat Keuangan Digital",
   description: "Aplikasi pencatat keuangan modern dan intuitif",
   manifest: "/manifest.json",
-  themeColor: "#10B981",
 };
 
 export default function RootLayout({
