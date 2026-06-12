@@ -81,10 +81,8 @@ export function AddTransactionModal({ onSuccess }: AddTransactionModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-          Tambah Transaksi
-        </Button>
+      <DialogTrigger render={<Button className="bg-primary text-primary-foreground hover:bg-primary/90" />}>
+        Tambah Transaksi
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
@@ -101,7 +99,7 @@ export function AddTransactionModal({ onSuccess }: AddTransactionModalProps) {
                 Tipe
               </Label>
               <div className="col-span-3">
-                <Select value={type} onValueChange={(v) => setType(v as TransactionType)}>
+                <Select value={type} onValueChange={(v) => v && setType(v as TransactionType)}>
                   <SelectTrigger id="type">
                     <SelectValue placeholder="Pilih Tipe" />
                   </SelectTrigger>
@@ -134,7 +132,7 @@ export function AddTransactionModal({ onSuccess }: AddTransactionModalProps) {
                 Kategori
               </Label>
               <div className="col-span-3">
-                <Select value={categoryId} onValueChange={setCategoryId}>
+                <Select value={categoryId} onValueChange={(v) => v && setCategoryId(v)}>
                   <SelectTrigger id="category">
                     <SelectValue placeholder="Pilih Kategori" />
                   </SelectTrigger>
