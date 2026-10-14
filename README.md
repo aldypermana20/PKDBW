@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💰 Pencatat Keuangan Digital (Vite + React + TypeScript)
 
-## Getting Started
+Aplikasi Web **Pencatat Keuangan Digital** yang modern, cepat, dan responsif. Dibangun dengan **React 19**, **TypeScript**, **Vite**, **Tailwind CSS v4**, **Recharts**, dan disiapkan secara penuh untuk di-deploy ke **Vercel** dengan integrasi **Supabase Database**.
 
-First, run the development server:
+---
 
+## ⚡ Fitur Utama
+
+- 📊 **Dashboard Analisis**: Ringkasan Total Saldo, Pemasukan, Pengeluaran, Net Tabungan, dan Grafik Tren Arus Kas Mingguan (Recharts).
+- 💸 **Pencatatan Transaksi**: Catat transaksi Pemasukan dan Pengeluaran dengan modal responsif, pilihan Kategori, Dompet, dan Catatan.
+- 🔍 **Filter & Pencarian**: Filter transaksi berdasarkan Jenis (Income/Expense), Kategori, Dompet, serta Kata Kunci Pencarian.
+- 🏦 **Manajemen Wallet / Rekening**: Dukungan untuk Bank BCA, Mandiri, E-Wallet (GoPay/OVO/ShopeePay), dan Cash/Tunai.
+- 🎯 **Target Anggaran (Budgeting)**: Batas alokasi pengeluaran per kategori dengan indikator persentase & peringatan otomatis.
+- 📈 **Laporan & Ekspor Data**: Visualisasi Pie Chart persentase pengeluaran dan ekspor transaksi ke format **CSV**.
+- 💱 **Multi-Currency Support**: Switcher langsung antara **IDR (Rupiah)** dan **USD (Dollar)**.
+- 🌐 **Vercel Ready**: Dilengkapi file `vercel.json` untuk penanganan Single Page Application (SPA) Client Routing.
+
+---
+
+## 🚀 Panduan Memulai (Pengembangan Lokal)
+
+### 1. Prasyarat
+- Node.js (v18+)
+- npm atau pnpm
+
+### 2. Instalasi & Pengoperasian
 ```bash
+# Clone atau buka direktori proyek
+cd pencatat-keuangan
+
+# Jalankan server pengembangan lokal (Vite Dev Server)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Buka browser di `http://localhost:3000`
+
+### 3. Skrip Build Produksi
+```bash
+# Kompilasi TypeScript & bundling Vite
+npm run build
+
+# Preview build produksi secara lokal
+npm run preview
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ☁️ Panduan Deploy ke Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Proyek ini telah dikonfigurasi untuk pengunggahan instan ke **Vercel**:
 
-## Learn More
+1. **Push ke GitHub / GitLab**:
+   ```bash
+   git add .
+   git commit -m "Migrasi ke React + TypeScript (Vite) & Kesiapan Vercel"
+   git push origin main
+   ```
+2. **Import ke Vercel**:
+   - Buka [Vercel Dashboard](https://vercel.com/dashboard) -> **Add New Project**.
+   - Pilih repository GitHub ini.
+   - **Framework Preset**: Pilih **Vite**.
+   - **Build Command**: `npm run build` (atau `tsc -b && vite build`)
+   - **Output Directory**: `dist`
+3. **Environment Variables (Opsional untuk Supabase Sync)**:
+   Tambahkan variabel lingkungan di panel Vercel Settings:
+   - `VITE_SUPABASE_URL` = `https://your-project.supabase.co`
+   - `VITE_SUPABASE_ANON_KEY` = `your-anon-key`
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Stack Teknologi
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Core**: React 19, TypeScript, Vite 6
+- **Routing**: `react-router-dom` v7
+- **Styling**: Tailwind CSS v4, Lucide React, Glassmorphism UI
+- **Chart**: Recharts
+- **Database Backend**: Supabase JS Client (`@supabase/supabase-js`)
